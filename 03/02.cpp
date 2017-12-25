@@ -6,7 +6,7 @@ using namespace std;
 void calcNxNmatrix(int n);
 
 int main() {
-    calcNxNmatrix(5);
+    calcNxNmatrix(7);
     return 0;
 }
 
@@ -53,7 +53,38 @@ void calcNxNmatrix(int n) {
         for(int j = 1; j < n; j++) {
             T[0][n - j] = T[0][n - j + 1] + T[1][n - j + 1] + T[1][n - j] + T[1][n - j - 1];
         }
-        // TOP LEFT / 
+        // TOP LEFT / T[0][0]
+        // 1st: right side          / 2nd coordinate + 1
+        // 2nd: lower-right         / 1st coordinate + 1, 2nd coordinate + 1
+        T[0][0] = T[0][1] + T[1][1];
+        // LEFT SIDE                / WHILE 1ST COORDINATE < N
+        // 1st: over the number     / 1st coordinate - 1  
+        // 2nd: upper-right         / 1st coordinate - 1, 2nd coordinate + 1
+        // 3rd: right               / 2nd coordinate + 1
+        // 4th: lower-right         / 1st coordinate + 1, 2nd coordinate + 1
+        // IF I CALCULATE THE BOTTOM LEFT WITH THIS IT RETURNS GOOD VALUE + 1
+        for(int j = 1; j < n - 1; j++) {
+            T[j][0] = T[j - 1][0] + T[j - 1][1] + T[j][1] + T[j + 1][1];
+        }
+        // BOTTOM LEFT              / [N][0]
+        // 1st: over the number     / 1st coordinate - 1
+        // 2nd: upper-right         / 1st coordinate - 1, 2nd coordinate + 1
+        T[n - 1][0] = T[n - 2][0] + T[n - 2][1];
+        
+        // BOTTOM MIDDLE
+        // 1st: left                / 2nd coordinate - 1
+        // 2nd: upper left          / 1st coordinate - 1, 2nd coordinate - 1
+        // 3rd: over the number     / 1st coordinate - 1  
+        // 4th: upper-right         / 1st coordinate - 1, 2nd coordinate + 1
+        for(int j = 1; j < n - 1; j++) {
+            T[n - 1][j] = T[n - 1][j - 1] + T[n - 2][j - 1] + T[n - 2][j] + T[n - 2][j + 1];
+        }
+
+        // BOTTOM RIGHT
+        // 1st: left                / 2nd coordinate - 1
+        // 2nd: upper left          / 1st coordinate - 1, 2nd coordinate - 1
+        // 3rd: over the number     / 1st coordinate - 1  
+        T[n - 1][n - 1] = T[n - 1][n - 2] + T[n - 2][n - 2] + T[n - 2][n - 1];
     }
     
 
